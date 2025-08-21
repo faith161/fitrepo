@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -60,9 +61,8 @@ fun AddRecordsScreen(navController: NavController) {
         }
     val exerciserViewModel: ExerciserViewModel = viewModel()
     val context = LocalContext.current
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = Color(0xFFADD86)
+    Box(
+        modifier = Modifier.fillMaxSize().background(Color(0xFF2196F3))
     ) {
 
         Column(

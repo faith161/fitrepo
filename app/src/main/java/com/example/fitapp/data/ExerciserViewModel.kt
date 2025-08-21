@@ -113,44 +113,67 @@ class ExerciserViewModel:ViewModel() {
         }
 
     }
-    fun updateRecords(exerciserId:  String,
-                      imageUri: Uri?,
-                      name: String,
-                      weight: String,
-                      age: String,
-                      day : String,
-                      context: Context,
-                      navController: NavController
-    ){
+    fun updateRecords(
+        exerciserId: String,
+        imageUri: Uri?,
+        name: String,
+        weight: String,
+        age: String,
+        day: String,
+        context: Context,
+        navController: NavController
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val  imageUrl = imageUri?.let{uploadToCloudinary(context,it)}
-                val updateRecords = mapOf(
-                    "id" to  exerciserId,
+                val ref = FirebaseDatabase.getInstance().getReference("Exercisers").child(exerciserId)
+
+                val snapshot = ref.get().await()
+
+                if (!snapshot.exists()) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(context, "Patient not found", Toast.LENGTH_LONG).show()
+                    }
+                    return@launch
+                }
+
+                val existing = snapshot.getValue(Exerciser::class.java)
+                if (existing == null) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(context, "Invalid data format", Toast.LENGTH_LONG).show()
+                    }
+                    return@launch
+                }
+
+                val imageUrl = if (imageUri != null) {
+                    uploadToCloudinary(context, imageUri)
+                } else {
+                    existing.imageUrl ?: ""
+                }
+
+                val updatedRecord = mapOf(
+                    "id" to exerciserId,
                     "name" to name,
                     "weight" to weight,
                     "age" to age,
                     "day" to day,
                     "imageUrl" to imageUrl
-                 )
-                val ref = FirebaseDatabase.getInstance()
-                    .getReference("Exercises").child(exerciserId)
-                ref.setValue(updateRecords).await()
-                fetchRecords(context)
-                withContext(Dispatchers.Main){
-                    Toast.makeText(context,"Records updated successfully",Toast.LENGTH_LONG).show()
+                )
+
+                ref.setValue(updatedRecord).await()
+
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, "Records updated Successfully+", Toast.LENGTH_LONG).show()
                     navController.navigate(ROUTE_DASHBOARDSCREEN)
                 }
-            }catch (e: Exception){
-                withContext(Dispatchers.Main){
-                    Toast.makeText(context,"Update failed",Toast.LENGTH_LONG).show()
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, "Update failed: ${e.message}", Toast.LENGTH_LONG).show()
                 }
             }
-
         }
-
     }
-
     fun uploadRecords(
         value: Uri?,
         name: String,

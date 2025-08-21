@@ -1,6 +1,7 @@
 package com.example.fitapp.ui.theme.screens.login
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -52,73 +53,82 @@ fun loginScreen(navController: NavController){
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     val authViewModel: AuthViewModel = viewModel()
+    Box(
+        modifier = Modifier.fillMaxSize().background(Color(0xFF2196F3))
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
 
-    Box() {
-        Image(painter = painterResource(id = R.drawable.boxer),
-            contentDescription = "login Boxerimage",
-            contentScale = ContentScale.FillBounds)
-    }
+            Text(
+                text = "Login Here",
+                fontSize = 40.sp,
+                fontFamily = FontFamily.Serif,
+                fontStyle = FontStyle.Normal,
+                color = Color.Red,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(5.dp)
+            )
+            Spacer(modifier = Modifier.height(10.dp))
 
-        Column(modifier = Modifier.fillMaxSize(),
-    verticalArrangement = Arrangement.Center,
-    horizontalAlignment = Alignment.CenterHorizontally){
+            Image(
+                painter = painterResource(id = R.drawable.fit),
+                contentDescription = "Image Logo",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(80.dp),
+                contentScale = ContentScale.Fit
+            )
+            Spacer(modifier = Modifier.height(10.dp))
 
-        Text(text = "Login Here",
-            fontSize = 40.sp,
-            fontFamily = FontFamily.Serif,
-            fontStyle = FontStyle.Normal,
-            color = Color.Red,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-//                .background(Color.LightGray)
-                .padding(5.dp))
-//        Spacer(modifier = Modifier.height(10.dp))
-////        Image(painter = painterResource(id= R.drawable.logo),
-////            contentDescription = "Image Logo",
-////            modifier = Modifier
-////                .fillMaxWidth()
-////                .height(80.dp),
-////            contentScale = ContentScale.Fit)
-//            Spacer(modifier = Modifier.height(10.dp))
-
-        OutlinedTextField(value = email, onValueChange = {email=it},
-            label = { Text("Enter your Email") },
-            textStyle = TextStyle(color= Color.White),
-            placeholder = { Text("Please enter your Email") },
-            leadingIcon = { Icon(Icons.Default.Email, contentDescription = "Email icon") },
-            modifier = Modifier.fillMaxWidth(0.8f),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
-        )
+            OutlinedTextField(
+                value = email, onValueChange = { email = it },
+                label = { Text("Enter your Email") },
+                textStyle = TextStyle(color = Color.White),
+                placeholder = { Text("Please enter your Email") },
+                leadingIcon = { Icon(Icons.Default.Email, contentDescription = "Email icon") },
+                modifier = Modifier.fillMaxWidth(0.8f),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
+            )
 
             Spacer(modifier = Modifier.height(10.dp))
-        OutlinedTextField(value = password, onValueChange = {password=it},
-            label = { Text("Enter your Password") },
-            placeholder = { Text("Please enter your Password") },
-            visualTransformation = PasswordVisualTransformation(),
-            leadingIcon = { Icon(Icons.Default.Lock, contentDescription = "Lock icon") },
-            modifier = Modifier.fillMaxWidth(0.8f),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
-        )
+            OutlinedTextField(
+                value = password, onValueChange = { password = it },
+                label = { Text("Enter your Password") },
+                placeholder = { Text("Please enter your Password") },
+                visualTransformation = PasswordVisualTransformation(),
+                leadingIcon = { Icon(Icons.Default.Lock, contentDescription = "Lock icon") },
+                modifier = Modifier.fillMaxWidth(0.8f),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+            )
             Spacer(modifier = Modifier.height(10.dp))
-            val context= LocalContext.current
-            Button(onClick = {
-                authViewModel.login(email=email,
-                    password=password,
-                    navController = navController,
-                    context = context
-                )
-            },
-                colors =ButtonDefaults.buttonColors(Color.Red),
-                modifier = Modifier.fillMaxWidth(0.8f) )
+            val context = LocalContext.current
+            Button(
+                onClick = {
+                    authViewModel.login(
+                        email = email,
+                        password = password,
+                        navController = navController,
+                        context = context
+                    )
+                },
+                colors = ButtonDefaults.buttonColors(Color.Red),
+                modifier = Modifier.fillMaxWidth(0.8f)
+            )
 
             { Text("Login", color = Color.White) }
 
-            Text(text = "If not registered, Register here",
+            Text(
+                text = "If not registered, Register here",
                 color = Color.Blue,
-                modifier = Modifier.clickable {navController.navigate(ROUTE_REGISTER)})
+                modifier = Modifier.clickable { navController.navigate(ROUTE_REGISTER) })
 
         }
+    }
     }
 
 

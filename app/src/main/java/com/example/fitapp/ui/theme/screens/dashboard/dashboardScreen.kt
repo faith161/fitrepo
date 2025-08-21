@@ -121,8 +121,8 @@ fun DashboardScreen(navController: NavController) {
     { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding)) {
             Image(
-                painter = painterResource(id = R.drawable.pexel5),
-                contentDescription = "DashboardScreen pexel",
+                painter = painterResource(id = R.drawable.trees),
+                contentDescription = "DashboardScreen trees",
                 contentScale = ContentScale.FillBounds
             )
         }
@@ -202,24 +202,35 @@ fun DashboardScreen(navController: NavController) {
                         .clickable { navController.navigate(ROUTE_ADDRECORDSSCREEN) },
                     shape = RoundedCornerShape(20.dp),
                     elevation = CardDefaults.cardElevation(10.dp),
-                    colors = CardDefaults.cardColors(Color.LightGray),
-                ) {
+                    colors = CardDefaults.cardColors(Color.Cyan),
+                )
+                {
                     Box(
                         modifier = Modifier
-                            .height(60.dp)
+                            .height(80.dp)
                             .padding(20.dp),
                         contentAlignment = Alignment.Center
-                    ) {
+                    )
+
+                    {
+                        Column {
+                            Icon(
+                                Icons.Default.Person, contentDescription = "",
+                                modifier = Modifier.size(22.dp)
+                                    .align(Alignment.CenterHorizontally),
+                                tint = Color.Blue
+                            )
 
                             Text(
                                 text = "Add Records",
-                                fontSize = 15.sp,
-                                textAlign = TextAlign.Start,
-                                color = Color.Black,
-                                modifier = Modifier.fillMaxWidth()
+                                fontStyle = FontStyle.Normal,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 20.sp,
+                                textAlign = TextAlign.Center,
+                                color = Color.Black, modifier = Modifier.fillMaxWidth()
                             )
                         }
-
+                    }
                 }
             }
 
@@ -232,23 +243,34 @@ fun DashboardScreen(navController: NavController) {
                         .clickable { navController.navigate(ROUTE_VIEWRECORDSSSCREEN) },
                     shape = RoundedCornerShape(20.dp),
                     elevation = CardDefaults.cardElevation(10.dp),
-                    colors = CardDefaults.cardColors(Color.LightGray)
+                    colors = CardDefaults.cardColors(Color.Cyan)
                 ) {
                     Box (
 
 
                     modifier = Modifier
-                        .height(60.dp)
+                        .height(80.dp)
                         .padding(20.dp),
                     contentAlignment = Alignment.Center
                 ){
+
+                        Column {
+                            Icon(
+                                Icons.Default.Menu, contentDescription = "",
+                                modifier = Modifier.size(22.dp)
+                                    .align(Alignment.CenterHorizontally),
+                                tint = Color.Blue
+                            )
+
                             Text(
                                 text = "View Records",
-                                fontSize = 13.sp,
-                                textAlign = TextAlign.Start,
-                                color = Color.Black,
-                                modifier = Modifier.fillMaxWidth()
+                                fontStyle = FontStyle.Normal,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 20.sp,
+                                textAlign = TextAlign.Center,
+                                color = Color.Black, modifier = Modifier.fillMaxWidth()
                             )
+                        }
                     }
                 }
             }

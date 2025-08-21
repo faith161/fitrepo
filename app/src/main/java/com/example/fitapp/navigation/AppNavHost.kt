@@ -19,7 +19,7 @@ import com.example.fitapp.ui.theme.screens.register.registerScreen
 import com.example.fitapp.ui.theme.screens.SplashScreen
 
 @Composable
-fun AppNavHost(navController: NavHostController= rememberNavController(),startDestination:String= ROUTE_DASHBOARDSCREEN){
+fun AppNavHost(navController: NavHostController= rememberNavController(),startDestination:String= ROUTE_SPLASH){
     NavHost(navController=navController, startDestination = startDestination){
         composable(ROUTE_SPLASH){ SplashScreen { navController.navigate(ROUTE_REGISTER){popUpTo(
             ROUTE_SPLASH){inclusive=true} } } }
@@ -29,12 +29,13 @@ fun AppNavHost(navController: NavHostController= rememberNavController(),startDe
         composable(ROUTE_ADDRECORDSSCREEN){ AddRecordsScreen(navController) }
         composable(ROUTE_VIEWRECORDSSSCREEN){ ExerciserListScreen(navController) }
         composable(
-            ROUTE_UPDATERECORDS,
-            arguments = listOf(navArgument("exerciserId") { type = NavType.StringType })
+            route = "update_patient/{exerciserId}",
+            arguments = listOf(navArgument("exerciserId") { defaultValue = "" })
         ) { backStackEntry ->
-            val exerciserId = backStackEntry.arguments?.getString("exerciserId")!!
+            val exerciserId = backStackEntry.arguments?.getString("exerciserId") ?: ""
             UpdateRecordsScreen(navController, exerciserId)
         }
+
 
     }
 }

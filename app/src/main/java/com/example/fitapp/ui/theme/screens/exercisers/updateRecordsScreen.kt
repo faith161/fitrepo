@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -60,7 +61,6 @@ fun UpdateRecordsScreen(navController: NavController,exerciserId:String) {
             id = exerciserId
         }
     }
-
     if (exerciser==null){
         Box(modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
@@ -78,99 +78,106 @@ fun UpdateRecordsScreen(navController: NavController,exerciserId:String) {
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
           it?.let { uri -> imageUri.value = uri }
     }
-
     val context = LocalContext.current
-    Box(){
-        Image(painter = painterResource(id = R.drawable.pexel),
-            contentDescription = "DashboardScreen pexels",
-            contentScale = ContentScale.FillBounds)}
+     Box(
+    modifier = Modifier.fillMaxSize().background(Color(0xFF2196F3))
+) {
 
-    Column(
-        modifier = Modifier.fillMaxSize().padding(10.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = "Update Patient",
-            fontStyle = FontStyle.Normal,
-            fontWeight = FontWeight.Bold,
-            fontSize = 26.sp,
-            textAlign = TextAlign.Center,
-            color = Color.Magenta, modifier = Modifier.fillMaxWidth()
-        )
-        Card(shape = CircleShape,
-            modifier = Modifier.padding(10.dp).size(200.dp)) {
-            AsyncImage(
-                model = imageUri.value ?: exerciser!!.imageUrl,
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.size(200.dp).clickable {
-                    launcher.launch("image/*")
-                })
+         Column(
+             modifier = Modifier.fillMaxSize().padding(10.dp),
+             horizontalAlignment = Alignment.CenterHorizontally
+         ) {
+             Text(
+                 text = "Update Records",
+                 fontStyle = FontStyle.Normal,
+                 fontWeight = FontWeight.Bold,
+                 fontSize = 26.sp,
+                 textAlign = TextAlign.Center,
+                 color = Color.Magenta, modifier = Modifier.fillMaxWidth()
+             )
+             Card(
+                 shape = CircleShape,
+                 modifier = Modifier.padding(10.dp).size(200.dp)
+             ) {
+                 AsyncImage(
+                     model = imageUri.value ?: exerciser!!.imageUrl ?: R.drawable.pexel2,
+                     contentDescription = null,
+                     contentScale = ContentScale.Crop,
+                     modifier = Modifier.size(200.dp).clickable {
+                         launcher.launch("image/*")
+                     })
 
-        }
-        Text(text = "Tap to Change Image")
-        OutlinedTextField(
-            value = name,
-            onValueChange = { name = it },
-            label = { Text(text = "Enter Patient Name") },
-            placeholder = { Text(text = "Please enter patient name") },
-            modifier = Modifier.fillMaxWidth()
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(
-            value = weight,
-            onValueChange = { weight = it },
-            label = { Text(text = "Enter Your Weight") },
-            placeholder = { Text(text = "Please enter your age") },
-            modifier = Modifier.fillMaxWidth()
-        )
+             }
+             Text(text = "Tap to Change Image")
+             OutlinedTextField(
+                 value = name,
+                 onValueChange = { name = it },
+                 label = { Text(text = "Enter Patient Name") },
+                 placeholder = { Text(text = "Please enter patient name") },
+                 modifier = Modifier.fillMaxWidth()
+             )
+             Spacer(modifier = Modifier.height(8.dp))
+             OutlinedTextField(
+                 value = weight,
+                 onValueChange = { weight = it },
+                 label = { Text(text = "Enter Your Weight") },
+                 placeholder = { Text(text = "Please enter your age") },
+                 modifier = Modifier.fillMaxWidth()
+             )
 
-        Spacer(modifier = Modifier.height(8.dp))
+             Spacer(modifier = Modifier.height(8.dp))
 
-        OutlinedTextField(
-            value = age,
-            onValueChange = { age = it },
-            label = { Text(text = "Enter Patient Age") },
-            placeholder = { Text(text = "Please enter age") },
-            modifier = Modifier.fillMaxWidth()
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(
-            value = day,
-            onValueChange = { day = it },
-            label = { Text(text = "Day") },
-            placeholder = { Text(text = "Day") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(100.dp),
-            singleLine = false
+             OutlinedTextField(
+                 value = age,
+                 onValueChange = { age = it },
+                 label = { Text(text = "Enter Patient Age") },
+                 placeholder = { Text(text = "Please enter age") },
+                 modifier = Modifier.fillMaxWidth()
+             )
+             Spacer(modifier = Modifier.height(8.dp))
+             OutlinedTextField(
+                 value = day,
+                 onValueChange = { day = it },
+                 label = { Text(text = "Day") },
+                 placeholder = { Text(text = "Day") },
+                 modifier = Modifier
+                     .fillMaxWidth()
+                     .height(100.dp),
+                 singleLine = false
 
-        )
-Spacer(modifier = Modifier.height(10.dp))
-        Row (modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween){
-            Button(onClick = {navController.popBackStack()},
-                colors = ButtonDefaults
-                    .buttonColors(Color.Red))
-            { Text(text = "GO BACK")
-            }
+             )
+             Spacer(modifier = Modifier.height(10.dp))
+             Row(
+                 modifier = Modifier.fillMaxWidth(),
+                 horizontalArrangement = Arrangement.SpaceBetween
+             ) {
+                 Button(
+                     onClick = { navController.popBackStack() },
+                     colors = ButtonDefaults
+                         .buttonColors(Color.Red)
+                 )
+                 {
+                     Text(text = "GO BACK")
+                 }
 
-            Button(onClick = {
-                exerciserViewModel.updateRecords(
-                    exerciserId,
-                    imageUri.value,
-                    name,
-                    weight,
-                    age,
-                    day,
-                    context,
-                    navController
-                )
-            },
-                colors = ButtonDefaults
-                .buttonColors(Color.Blue)) { Text(text = "UPDATE")}
-        }
-    }
-
+                 Button(
+                     onClick = {
+                         exerciserViewModel.updateRecords(
+                             exerciserId,
+                             imageUri.value,
+                             name,
+                             weight,
+                             age,
+                             day,
+                             context,
+                             navController
+                         )
+                     },
+                     colors = ButtonDefaults
+                         .buttonColors(Color.Blue)
+                 ) { Text(text = "UPDATE") }
+             }
+         }
+     }
 }
 
