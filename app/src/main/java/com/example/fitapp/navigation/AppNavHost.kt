@@ -2,7 +2,6 @@ package com.example.fitapp.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -13,10 +12,10 @@ import com.example.fitapp.ui.theme.screens.dashboard.DashboardScreen
 import com.example.fitapp.ui.theme.screens.login.loginScreen
 //import com.example.fitapp.ui.theme.screens.exerciser.AddRecordsScreen
 // import com.example.fitapp.ui.theme.screens.exercisers.ExerciseListScreen
-import com.example.fitapp.ui.theme.screens.exercisers.ExerciserListScreen
 import com.example.fitapp.ui.theme.screens.patients.UpdateRecordsScreen
 import com.example.fitapp.ui.theme.screens.register.registerScreen
 import com.example.fitapp.ui.theme.screens.SplashScreen
+import com.example.fitapp.ui.theme.screens.exercisers.ViewRecordsScreen
 
 @Composable
 fun AppNavHost(navController: NavHostController= rememberNavController(),startDestination:String= ROUTE_SPLASH){
@@ -27,7 +26,7 @@ fun AppNavHost(navController: NavHostController= rememberNavController(),startDe
         composable(ROUTE_LOGIN){ loginScreen(navController) }
         composable(ROUTE_DASHBOARDSCREEN){ DashboardScreen(navController) }
         composable(ROUTE_ADDRECORDSSCREEN){ AddRecordsScreen(navController) }
-        composable(ROUTE_VIEWRECORDSSSCREEN){ ExerciserListScreen(navController) }
+        composable(ROUTE_VIEWRECORDSCREEN){ ViewRecordsScreen(navController) }
         composable(
             route = "update_patient/{exerciserId}",
             arguments = listOf(navArgument("exerciserId") { defaultValue = "" })
@@ -38,6 +37,9 @@ fun AppNavHost(navController: NavHostController= rememberNavController(),startDe
 
 
     }
-}
+
+
+    }
+
 
 

@@ -6,6 +6,8 @@ data class Exerciser(
     val weight: String? = null,
     val age: String? = null,
     val day: String? = null,
+    val steps: String? = null,
+    val diagnosis: String? = null,
     val imageUrl: String? = null
 )
 

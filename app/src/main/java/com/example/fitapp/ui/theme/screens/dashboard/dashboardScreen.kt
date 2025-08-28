@@ -69,7 +69,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.fitapp.R
 import com.example.fitapp.data.AuthViewModel
 import com.example.fitapp.navigation.ROUTE_ADDRECORDSSCREEN
-import com.example.fitapp.navigation.ROUTE_VIEWRECORDSSSCREEN
+import com.example.fitapp.navigation.ROUTE_VIEWRECORDSCREEN
 import kotlinx.coroutines.selects.select
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -197,89 +197,64 @@ fun DashboardScreen(navController: NavController) {
             Row(modifier = Modifier.wrapContentWidth()) {
                 Card(
                     modifier = Modifier
-                        .width(700.dp)
+                        .width(200.dp)
                         .padding(20.dp)
                         .clickable { navController.navigate(ROUTE_ADDRECORDSSCREEN) },
                     shape = RoundedCornerShape(20.dp),
                     elevation = CardDefaults.cardElevation(10.dp),
-                    colors = CardDefaults.cardColors(Color.Cyan),
-                )
-                {
-                    Box(
+                    colors = CardDefaults.cardColors(Color.White),
+                ) {
+                    Row(
                         modifier = Modifier
-                            .height(80.dp)
-                            .padding(20.dp),
-                        contentAlignment = Alignment.Center
-                    )
+                            .height(140.dp)
+                            .padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
 
-                    {
-                        Column {
-                            Icon(
-                                Icons.Default.Person, contentDescription = "",
-                                modifier = Modifier.size(22.dp)
-                                    .align(Alignment.CenterHorizontally),
-                                tint = Color.Blue
-                            )
-
-                            Text(
-                                text = "Add Records",
-                                fontStyle = FontStyle.Normal,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 20.sp,
-                                textAlign = TextAlign.Center,
-                                color = Color.Black, modifier = Modifier.fillMaxWidth()
-                            )
-                        }
+                        Text(
+                            text = "Add Records",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 20.sp,
+                            color = Color.Black
+                        )
                     }
                 }
-            }
+
 
                 Spacer(modifier = Modifier.width(20.dp))
-            Row(modifier = Modifier.wrapContentWidth()) {
                 Card(
                     modifier = Modifier
-                        .width(800.dp)
+                        .width(200.dp)
                         .padding(20.dp)
-                        .clickable { navController.navigate(ROUTE_VIEWRECORDSSSCREEN) },
+                        .clickable { navController.navigate(ROUTE_VIEWRECORDSCREEN) },
                     shape = RoundedCornerShape(20.dp),
                     elevation = CardDefaults.cardElevation(10.dp),
-                    colors = CardDefaults.cardColors(Color.Cyan)
+                    colors = CardDefaults.cardColors(Color.White),
                 ) {
-                    Box (
+                    Row(
+                        modifier = Modifier
+                            .height(140.dp)
+                            .padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
 
-
-                    modifier = Modifier
-                        .height(80.dp)
-                        .padding(20.dp),
-                    contentAlignment = Alignment.Center
-                ){
-
-                        Column {
-                            Icon(
-                                Icons.Default.Menu, contentDescription = "",
-                                modifier = Modifier.size(22.dp)
-                                    .align(Alignment.CenterHorizontally),
-                                tint = Color.Blue
-                            )
-
-                            Text(
-                                text = "View Records",
-                                fontStyle = FontStyle.Normal,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 20.sp,
-                                textAlign = TextAlign.Center,
-                                color = Color.Black, modifier = Modifier.fillMaxWidth()
-                            )
-                        }
+                        Text(
+                            text = "View Records",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 20.sp,
+                            color = Color.Black
+                        )
                     }
                 }
             }
-
-
         }
     }
-
 }
+
+//        }
+//    }
+
+
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
     fun DashboardScreenPreview() {

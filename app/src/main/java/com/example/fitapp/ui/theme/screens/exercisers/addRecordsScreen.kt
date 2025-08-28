@@ -3,164 +3,153 @@ package com.example.fitapp.ui.theme.screens.exercisers
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.fitapp.R
 import com.example.fitapp.data.ExerciserViewModel
+import com.example.fitapp.models.PersonalRecord
 
 @Composable
 fun AddRecordsScreen(navController: NavController) {
+    val context = LocalContext.current
+    val viewModel: ExerciserViewModel = viewModel()
+
     var name by remember { mutableStateOf("") }
     var weight by remember { mutableStateOf("") }
+    var height by remember { mutableStateOf("") }
     var age by remember { mutableStateOf("") }
     var day by remember { mutableStateOf("") }
-    val imageUri = rememberSaveable() { mutableStateOf<Uri?>(null) }
-    val launcher =
-        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-            uri?.let { imageUri.value = it }
-        }
-    val exerciserViewModel: ExerciserViewModel = viewModel()
-    val context = LocalContext.current
-    Box(
-        modifier = Modifier.fillMaxSize().background(Color(0xFF2196F3))
-    ) {
+    var steps by remember { mutableStateOf("") }
+    var diagnosis by remember { mutableStateOf("") }
+    var isMale by remember { mutableStateOf(true) }
 
+    val imageUri = rememberSaveable { mutableStateOf<Uri?>(null) }
+    val imagePicker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
+        it?.let { uri -> imageUri.value = uri }
+    }
+
+    Surface(modifier = Modifier.fillMaxSize()) {
         Column(
-            modifier = Modifier.fillMaxSize().padding(10.dp),
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "ADD NEW RECORDS",
-                fontStyle = FontStyle.Normal,
-                fontWeight = FontWeight.Bold,
-                fontSize = 26.sp,
-                textAlign = TextAlign.Center,
-                color = Color.Magenta, modifier = Modifier.fillMaxWidth()
+                text = "Add New Record",
+                style = MaterialTheme.typography.headlineSmall,
+                color = Color(0xFF1976D2)
             )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
             Card(
                 shape = CircleShape,
-                modifier = Modifier.padding(10.dp).size(200.dp)
+                modifier = Modifier
+                    .size(140.dp)
+                    .clickable { imagePicker.launch("image/*") },
+                elevation = CardDefaults.cardElevation(8.dp)
             ) {
                 AsyncImage(
                     model = imageUri.value ?: R.drawable.ic_person,
-                    contentDescription = null,
+                    contentDescription = "Profile Picture",
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.size(200.dp).clickable {
-                        launcher.launch("image/*")
-                    })
-
+                    modifier = Modifier.fillMaxSize()
+                )
             }
-            Text(text = "Upload Picture Here")
-            OutlinedTextField(
-                value = name,
-                onValueChange = { name = it },
-                label = { Text(text = "Enter Patient Name") },
-                placeholder = { Text(text = "Please enter patient name") },
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(
-                value = weight,
-                onValueChange = { weight = it },
-                label = { Text(text = "Enter Your Weight") },
-                placeholder = { Text(text = "Please enter your weight") },
-                modifier = Modifier.fillMaxWidth()
-            )
 
             Spacer(modifier = Modifier.height(8.dp))
+            Text("Tap to upload image", color = Color.Gray)
 
-            Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(
-                value = age,
-                onValueChange = { age = it },
-                label = { Text(text = "Enter Patient Age") },
-                placeholder = { Text(text = "Please enter age") },
-                modifier = Modifier.fillMaxWidth()
-            )
-            OutlinedTextField(
-                value = day,
-                onValueChange = { day = it },
-                label = { Text(text = "Enter the day of the week") },
-                placeholder = { Text(text = "Please enter the day") },
-                modifier = Modifier.fillMaxWidth()
-            )
+            Spacer(modifier = Modifier.height(16.dp))
 
-            Spacer(modifier = Modifier.height(10.dp))
+            // Input Fields
+            OutlinedTextField(value = name, onValueChange = { name = it }, label = { Text("Name") }, modifier = Modifier.fillMaxWidth())
+            OutlinedTextField(value = weight, onValueChange = { weight = it }, label = { Text("Weight (kg)") }, modifier = Modifier.fillMaxWidth())
+            OutlinedTextField(value = height, onValueChange = { height = it }, label = { Text("Height (cm)") }, modifier = Modifier.fillMaxWidth())
+            OutlinedTextField(value = age, onValueChange = { age = it }, label = { Text("Age") }, modifier = Modifier.fillMaxWidth())
+            OutlinedTextField(value = day, onValueChange = { day = it }, label = { Text("Day") }, modifier = Modifier.fillMaxWidth())
+            OutlinedTextField(value = steps, onValueChange = { steps = it }, label = { Text("Steps") }, modifier = Modifier.fillMaxWidth())
+            OutlinedTextField(value = diagnosis, onValueChange = { diagnosis = it }, label = { Text("Diagnosis") }, modifier = Modifier.fillMaxWidth())
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text("Gender: ", modifier = Modifier.padding(end = 8.dp))
+                Button(
+                    onClick = { isMale = true },
+                    colors = ButtonDefaults.buttonColors(if (isMale) Color.Blue else Color.LightGray)
+                ) {
+                    Text("Male")
+                }
+                Spacer(modifier = Modifier.width(8.dp))
+                Button(
+                    onClick = { isMale = false },
+                    colors = ButtonDefaults.buttonColors(if (!isMale) Color.Magenta else Color.LightGray)
+                ) {
+                    Text("Female")
+                }
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Button(
                     onClick = { navController.popBackStack() },
-                    colors = ButtonDefaults
-                        .buttonColors(Color.Red)
-                )
-                {
-                    Text(text = "GO BACK")
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
+                ) {
+                    Text("Go Back")
                 }
 
                 Button(
                     onClick = {
-                        exerciserViewModel.uploadRecords(
-                            imageUri.value,
-                            name,
-                            weight,
-                            age,
-                            day,
-                            context,
-                            navController
+
+                        viewModel.uploadRecords(
+                            imageUri = imageUri.value,
+                            name = name,
+                            weight = weight,
+                            age = age,
+                            day = day,
+                            steps = steps,
+                            diagnosis = diagnosis,
+                            context = context,
+                            navController = navController
                         )
 
-                    }, colors = ButtonDefaults
-                        .buttonColors(Color.Blue)
-                ) { Text(text = "SAVE RECORDS") }
+                        viewModel.savePersonalRecord(
+                            PersonalRecord(
+                                name = name,
+                                weight = weight,
+                                height = height,
+                                age = age,
+                                steps = steps,
+                                diagnosis = diagnosis,
+                                imageUri = imageUri.value?.toString(),
+                                isMale = isMale
+                            )
+                        )
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF388E3C))
+                ) {
+                    Text("Save Record")
+                }
             }
         }
-
     }
-}
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun AddRecordsScreenPreview(){
-    AddRecordsScreen(rememberNavController())
 }

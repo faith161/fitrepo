@@ -74,6 +74,8 @@ fun UpdateRecordsScreen(navController: NavController,exerciserId:String) {
     var weight by remember { mutableStateOf(exerciser!!.weight ?:"") }
     var age by remember { mutableStateOf(exerciser!!.age ?:"") }
     var day by remember { mutableStateOf(exerciser!!.day ?:"") }
+    var steps by remember { mutableStateOf(exerciser!!.steps ?:"") }
+    var diagnosis by remember { mutableStateOf(exerciser!!.diagnosis ?:"") }
     val imageUri = remember { mutableStateOf<Uri?>(null) }
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
           it?.let { uri -> imageUri.value = uri }
@@ -146,6 +148,31 @@ fun UpdateRecordsScreen(navController: NavController,exerciserId:String) {
                  singleLine = false
 
              )
+             Spacer(modifier = Modifier.height(8.dp))
+             OutlinedTextField(
+                 value = steps,
+                 onValueChange = { steps = it },
+                 label = { Text(text = "Records your Steps") },
+                 placeholder = { Text(text = "Steps") },
+                 modifier = Modifier
+                     .fillMaxWidth()
+                     .height(100.dp),
+                 singleLine = false
+
+             )
+             Spacer(modifier = Modifier.height(8.dp))
+             OutlinedTextField(
+                 value = diagnosis,
+                 onValueChange = { diagnosis = it },
+                 label = { Text(text = "Diagnosis") },
+                 placeholder = { Text(text = "Diagnosis") },
+                 modifier = Modifier
+                     .fillMaxWidth()
+                     .height(100.dp),
+                 singleLine = false
+
+             )
+
              Spacer(modifier = Modifier.height(10.dp))
              Row(
                  modifier = Modifier.fillMaxWidth(),
@@ -169,6 +196,8 @@ fun UpdateRecordsScreen(navController: NavController,exerciserId:String) {
                              weight,
                              age,
                              day,
+                             steps,
+                             diagnosis,
                              context,
                              navController
                          )
