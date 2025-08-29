@@ -48,12 +48,13 @@ class ExerciserViewModel(application: Application) : AndroidViewModel(applicatio
             }
         }
 
-        fun deletePersonalRecord() {
-            viewModelScope.launch {
-                dataStore.clearRecord()
-                _personalRecord.value = null
-            }
-        }
+    suspend fun deletePersonalRecord() {
+        dataStore.clearRecord()
+        _personalRecord.value = null
+    }
+
+
+
 
 
     private val cloudinaryUrl = "https://api.cloudinary.com/v1_1/dhfozknlw/image/upload"
@@ -150,15 +151,15 @@ class ExerciserViewModel(application: Application) : AndroidViewModel(applicatio
             Toast.makeText(context, "Failed to load records", Toast.LENGTH_LONG).show()
         }
     }
-
-    fun deleteRecord(id: String, context: Context) {
-        val ref = FirebaseDatabase.getInstance().getReference("Exercisers").child(id)
-        ref.removeValue().addOnSuccessListener {
-            _exercisers.removeAll { it.id == id }
-        }.addOnFailureListener {
-            Toast.makeText(context, "Delete failed", Toast.LENGTH_LONG).show()
-        }
-    }
+//
+//    fun deleteRecord(id: String, context: Context) {
+//        val ref = FirebaseDatabase.getInstance().getReference("Exercisers").child(id)
+//        ref.removeValue().addOnSuccessListener {
+//            _exercisers.removeAll { it.id == id }
+//        }.addOnFailureListener {
+//            Toast.makeText(context, "Delete failed", Toast.LENGTH_LONG).show()
+//        }
+//    }
 
     fun updateRecords(
         id: String,
@@ -216,13 +217,10 @@ class ExerciserViewModel(application: Application) : AndroidViewModel(applicatio
             }
         }
     }
-
-    fun getPersonalRecord() {
-        suspend fun getPersonalRecord(): PersonalRecord? {
-            return dataStore.getRecord()
-        }
-
+    suspend fun getPersonalRecord(): PersonalRecord? {
+        return dataStore.getRecord()
     }
+
 
 
 }
